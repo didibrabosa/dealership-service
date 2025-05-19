@@ -1,4 +1,4 @@
-export class VehicleDto {
+export class VehicleResponseDto {
     id: string;
     type: string;
     brand: string;
