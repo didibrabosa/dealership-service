@@ -14,7 +14,7 @@ import { VehicleEntity } from 'src/vehicle/entities/vehicle.entity';
     port: 3306,
     username: 'root',
     password: 'example',
-    database: 'mariadb_delaership',
+    database: 'dealership-database',
     entities: [VehicleEntity],
     synchronize: true,
   })

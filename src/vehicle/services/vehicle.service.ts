@@ -12,7 +12,7 @@ export class VehicleService {
     ) {}
 
     async create(vehicleRequestDto: VehicleRequestDto): Promise<VehicleEntity> {
-        const vehicle = this.vehicleRepository.create(vehicleRequestDto);
+        const vehicle = await this.vehicleRepository.create(vehicleRequestDto);
         return this.vehicleRepository.save(vehicle);
     }
     findall(): Promise<VehicleEntity[]> {
