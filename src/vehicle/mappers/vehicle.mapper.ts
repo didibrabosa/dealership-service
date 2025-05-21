@@ -1,4 +1,4 @@
-import { VehicleRequestDto } from "../dtos/vehicle.request.dto";
+import { CreateVehicleDto } from "../dtos/create-vehicle.dto";
 import { VehicleResponseDto } from "../dtos/vehicle.response.dto";
 import { VehicleEntity } from "../entities/vehicle.entity";
 
@@ -12,7 +12,7 @@ export class VehicleMapper {
         };
     }
 
-    static toEntity(dto: VehicleRequestDto): VehicleEntity {
+    static toEntity(dto: CreateVehicleDto): VehicleEntity {
         const entity = new VehicleEntity();
         entity.type = dto.type;
         entity.brand = dto.brand;
