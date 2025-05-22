@@ -1,10 +1,8 @@
 import { Body, Controller, Post, Get, Delete, VersioningType } from '@nestjs/common';
-import { VehicleResponseDto } from '../dtos/vehicle.response.dto';
-import { CreateVehicleDto } from '../dtos/create-vehicle.dto';
+import { CreateVehicleDto, CreateVehicleResponseDto } from '../dtos/create-vehicle.dto';
 import { VehicleService } from '../services/vehicle.service';
 import { VehicleEntity } from '../entities/vehicle.entity';
 import { GetByTypeDto } from '../dtos/get-by-type.dto';
-import { request } from 'http';
 import { GetByIdDto } from '../dtos/get-by-id.dtos';
 
 @Controller('vehicle')
@@ -14,7 +12,7 @@ export class VehicleController {
     ) {}
 
     @Post()
-    async createVehicle(@Body() request: CreateVehicleDto): Promise<VehicleResponseDto> {
+    async createVehicle(@Body() request: CreateVehicleDto): Promise<CreateVehicleResponseDto> {
         return await this.vehicleService.createVehicle(request);
     }
 

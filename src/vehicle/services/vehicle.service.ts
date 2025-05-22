@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { CreateVehicleDto } from "../dtos/create-vehicle.dto";
+import { CreateVehicleDto, CreateVehicleResponseDto } from "../dtos/create-vehicle.dto";
 import { DataSource } from "typeorm";
 import { VehicleRepository } from "../repositories/vehicle.repository";
-import { VehicleResponseDto } from "../dtos/vehicle.response.dto";
 import { VehicleMapper } from "../mappers/vehicle.mapper";
 import { VehicleEntity } from "../entities/vehicle.entity";
 
@@ -17,9 +16,10 @@ export class VehicleService {
         this.vehicleRepository = new VehicleRepository(dataSource.manager);
     }
 
-    async createVehicle(request: CreateVehicleDto): Promise<VehicleResponseDto> {
-        const response = await this.vehicleRepository.createVehicle(request);
-        return VehicleMapper.toResponseDto(response);
+    async createVehicle(request: CreateVehicleDto): Promise<CreateVehicleResponseDto> {
+        const entity = VehicleMapper.toEntity(request);
+        const data = await this.vehicleRepository.createVehicle(entity);
+        return VehicleMapper.toDto(data);
     }
 
     async getAllVehicles(): Promise<VehicleEntity[]> {

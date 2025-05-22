@@ -1,14 +1,10 @@
-import { CreateVehicleDto } from "../dtos/create-vehicle.dto";
-import { VehicleResponseDto } from "../dtos/vehicle.response.dto";
+import { CreateVehicleDto, CreateVehicleResponseDto } from "../dtos/create-vehicle.dto";
 import { VehicleEntity } from "../entities/vehicle.entity";
 
 export class VehicleMapper {
-    static toResponseDto(entity: VehicleEntity): VehicleResponseDto {
+    static toDto(entity: VehicleEntity): CreateVehicleResponseDto {
         return {
             id: entity.id,
-            type: entity.type,
-            brand: entity.brand,
-            model: entity.model
         };
     }
 
