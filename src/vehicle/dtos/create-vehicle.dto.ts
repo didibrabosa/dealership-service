@@ -25,3 +25,7 @@ export class CreateVehicleDto {
     @IsString()
     plate: string;
 }
+
+export class CreateVehicleResponseDto {
+    id: string;
+}
