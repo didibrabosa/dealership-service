@@ -1,6 +1,7 @@
 import { EntityManager, Repository } from "typeorm";
 import { VehicleEntity } from "../entities/vehicle.entity";
 import { CreateVehicleDto } from "../dtos/create-vehicle.dto";
+import { UpdateVehcileDto } from "../dtos/update-vehicle.dto";
 
 export class VehicleRepository extends Repository<VehicleEntity> {
     constructor(menager: EntityManager) {
@@ -30,5 +31,14 @@ export class VehicleRepository extends Repository<VehicleEntity> {
                 id,
             }
         })
+    }
+
+    async updateVehiclePartialById(id: string, partial: Partial<UpdateVehcileDto>): Promise<VehicleEntity> {
+        await this.update(id, partial);
+        return this.findOneOrFail({
+            where: {
+                id,
+            }
+        });
     }
 }
