@@ -38,4 +38,8 @@ export class VehicleService {
     async updateVehiclePartialById(id: string, dto: UpdateVehcileDto): Promise<VehicleEntity> {
         return await this.vehicleRepository.updateVehiclePartialById(id, dto);
     }
+
+    async softDeleteVehicleById(id: string): Promise<void> {
+        return await this.vehicleRepository.softDeleteVehicleById(id);
+    }
 }

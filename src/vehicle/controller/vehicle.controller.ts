@@ -34,4 +34,9 @@ export class VehicleController {
     async updateVehicle(@Param('id') id, @Body() request: UpdateVehcileDto): Promise<VehicleEntity> {
         return await this.vehicleService.updateVehiclePartialById(id, request)
     }
+
+    @Delete('/id/:id')
+    async softDeleteVehicleById(@Param('id') id): Promise<void> {
+        return await this.vehicleService.softDeleteVehicleById(id);
+    }
 }

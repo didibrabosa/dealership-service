@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { IsOptional } from "class-validator";
+import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class VehicleEntity {
@@ -23,6 +24,6 @@ export class VehicleEntity {
     @Column()
     plate: string;
 
-    @Column('boolean', {default: true})
-    active: boolean;
+    @DeleteDateColumn()
+    deactiveddAt?: Date;
 }
