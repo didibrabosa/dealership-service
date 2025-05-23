@@ -22,4 +22,7 @@ export class VehicleEntity {
 
     @Column()
     plate: string;
+
+    @Column('boolean', {default: true})
+    active: boolean;
 }
