@@ -45,4 +45,8 @@ export class VehicleRepository extends Repository<VehicleEntity> {
     async softDeleteVehicleById(id: string): Promise<void> {
         await this.softDelete(id);
     }
+
+    async restoreVehicleById(id: string): Promise<void> {
+        await this.restore(id);
+    }
 }

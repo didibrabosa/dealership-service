@@ -39,4 +39,9 @@ export class VehicleController {
     async softDeleteVehicleById(@Param('id') id): Promise<void> {
         return await this.vehicleService.softDeleteVehicleById(id);
     }
+
+    @Patch('/restore/:id')
+    async restoreVehicleById(@Param('id') id): Promise<void> {
+        return await this.vehicleService.restoreVehicleById(id);
+    }
 }

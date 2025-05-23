@@ -42,4 +42,8 @@ export class VehicleService {
     async softDeleteVehicleById(id: string): Promise<void> {
         return await this.vehicleRepository.softDeleteVehicleById(id);
     }
+
+    async restoreVehicleById(id: string): Promise<void> {
+        await this.vehicleRepository.restoreVehicleById(id);
+    }
 }
