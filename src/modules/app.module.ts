@@ -6,19 +6,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { VehicleEntity } from 'src/vehicle/entities/vehicle.entity';
 
-
 @Module({
-  imports: [VehicleModule, TypeOrmModule.forRoot({
-    type: 'mariadb',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'example',
-    database: 'dealership-database',
-    entities: [VehicleEntity],
-    synchronize: true,
-  })
-],
+  imports: [
+    VehicleModule,
+    TypeOrmModule.forRoot({
+      type: 'mariadb',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'example',
+      database: 'dealership-database',
+      entities: [VehicleEntity],
+      synchronize: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
