@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Logger,
 } from '@nestjs/common';
 import {
   CreateVehicleDto,
@@ -17,12 +18,14 @@ import { UpdateVehcileDto } from '../dtos/update-vehicle.dto';
 
 @Controller('vehicle')
 export class VehicleController {
+  private readonly logger = new Logger(VehicleController.name);
   constructor(private vehicleService: VehicleService) {}
 
   @Post()
   async createVehicle(
     @Body() vehicle: CreateVehicleDto,
   ): Promise<CreateVehicleResponseDto> {
+    this.logger.log(`POST http://localhost:3000/vehicle`);
     return await this.vehicleService.createVehicle(vehicle);
   }
 

@@ -29,5 +29,5 @@ export class VehicleEntity {
   plate: string;
 
   @DeleteDateColumn()
-  deactiveddAt?: Date;
+  deactivedAt?: Date;
 }
