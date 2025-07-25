@@ -1,63 +1,61 @@
-import { Logger } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { VehicleEntity } from '../entities/vehicle.entity';
 import { CreateVehicleDto } from '../dtos/create-vehicle.dto';
-import { UpdateVehcileDto } from '../dtos/update-vehicle.dto';
+import { UpdateVehicleDto } from '../dtos/update-vehicle.dto';
 
-export class VehicleRepository extends Repository<VehicleEntity> {
+@Injectable()
+export class VehicleRepository {
   private readonly logger = new Logger(VehicleRepository.name);
-  constructor(menager: EntityManager) {
-    super(VehicleEntity, menager);
-  }
+  constructor(
+    @InjectRepository(VehicleEntity)
+    private readonly vehicleRepository: Repository<VehicleEntity>,
+  ) {}
   async createVehicle(vehicle: CreateVehicleDto): Promise<VehicleEntity> {
-    const newVehicle = this.create(vehicle);
+    const newVehicle = this.vehicleRepository.create(vehicle);
+
     this.logger.log('A new vehicle was created in DataBase');
-    return await this.save(newVehicle);
+    return await this.vehicleRepository.save(newVehicle);
   }
 
   async getAllVehicles(): Promise<VehicleEntity[]> {
     this.logger.log('Getting every vehicle in DataBase');
-    return await this.find();
+    return await this.vehicleRepository.find();
   }
 
   async getVehiclesByType(type: string): Promise<VehicleEntity[]> {
     this.logger.log('Getting a vehicle in DataBase by type');
-    return await this.find({
-      where: {
-        type,
-      },
-    });
+    return await this.vehicleRepository.find({ where: { type } });
   }
 
-  async getVehicleById(id: string): Promise<VehicleEntity[]> {
+  async getVehicleById(id: number): Promise<VehicleEntity[]> {
     this.logger.log('Getting a vehicle in DataBase by id');
-    return await this.find({
-      where: {
-        id,
-      },
-    });
+    return await this.vehicleRepository.find({ where: { id } });
   }
 
   async updateVehiclePartialById(
-    id: string,
-    partial: Partial<UpdateVehcileDto>,
+    id: number,
+    partial: Partial<UpdateVehicleDto>,
   ): Promise<VehicleEntity> {
-    await this.update(id, partial);
+    const vehicle = await this.getVehicleById(id);
+
+    if (!vehicle) {
+      throw new NotFoundException(`Vehicle with ID "${id}" not found`);
+    }
+    await this.vehicleRepository.update(id, partial);
     this.logger.log('Vehicle updated in DataBase');
-    return this.findOneOrFail({
-      where: {
-        id,
-      },
-    });
+
+    return await this.vehicleRepository.findOneBy({ id });
   }
 
-  async softDeleteVehicleById(id: string): Promise<void> {
+  async softDeleteVehicleById(id: number): Promise<void> {
     this.logger.log('Deactivating a vehicle in DataBase');
-    await this.softDelete(id);
+    await this.vehicleRepository.softDelete(id);
   }
 
-  async restoreVehicleById(id: string): Promise<void> {
+  async restoreVehicleById(id: number): Promise<void> {
     this.logger.log('Activating a vehicle in DataBase');
-    await this.restore(id);
+    await this.vehicleRepository.restore(id);
   }
 }

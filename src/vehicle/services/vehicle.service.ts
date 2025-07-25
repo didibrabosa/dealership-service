@@ -3,29 +3,27 @@ import {
   CreateVehicleDto,
   CreateVehicleResponseDto,
 } from '../dtos/create-vehicle.dto';
-import { DataSource } from 'typeorm';
 import { VehicleRepository } from '../repositories/vehicle.repository';
 import { VehicleMapper } from '../mappers/vehicle.mapper';
 import { VehicleEntity } from '../entities/vehicle.entity';
-import { UpdateVehcileDto } from '../dtos/update-vehicle.dto';
+import {
+  UpdateVehicleDto,
+  UpdateVehicleResponseDto,
+} from '../dtos/update-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
   private readonly logger = new Logger(VehicleService.name);
-  private vehicleRepository: VehicleRepository;
-  constructor(private dataSource: DataSource) {
-    this.vehicleRepository = new VehicleRepository(dataSource.manager);
-  }
+  constructor(private readonly vehicleRepository: VehicleRepository) {}
 
   async createVehicle(
     dto: CreateVehicleDto,
   ): Promise<CreateVehicleResponseDto> {
-    this.logger.log('Transforming the dto into an entity');
-    const entity = VehicleMapper.toEntity(dto);
     this.logger.log('Creating a new vehicle in DataBase with this data');
-    const data = await this.vehicleRepository.createVehicle(entity);
+    const data = await this.vehicleRepository.createVehicle(dto);
+
     this.logger.log('Transforming the entity into an dto');
-    return VehicleMapper.toDto(data);
+    return VehicleMapper.toCreateResponseDto(data);
   }
 
   async getAllVehicles(): Promise<VehicleEntity[]> {
@@ -37,25 +35,28 @@ export class VehicleService {
     return await this.vehicleRepository.getVehiclesByType(type);
   }
 
-  async getVehicleById(id: string): Promise<VehicleEntity[]> {
+  async getVehicleById(id: number): Promise<VehicleEntity[]> {
     this.logger.log(`Getting a vehicle of type ${id}`);
     return await this.vehicleRepository.getVehicleById(id);
   }
 
   async updateVehiclePartialById(
-    id: string,
-    dto: UpdateVehcileDto,
-  ): Promise<VehicleEntity> {
+    id: number,
+    dto: UpdateVehicleDto,
+  ): Promise<UpdateVehicleResponseDto> {
     this.logger.log(`Updating a vehicle with id ${id}`);
-    return await this.vehicleRepository.updateVehiclePartialById(id, dto);
+    const data = await this.vehicleRepository.updateVehiclePartialById(id, dto);
+
+    this.logger.log('Transforming the entity into an dto');
+    return VehicleMapper.toUpdateResponseDto(data);
   }
 
-  async softDeleteVehicleById(id: string): Promise<void> {
+  async softDeleteVehicleById(id: number): Promise<void> {
     this.logger.log(`Deactivating a vehicle with id ${id}`);
     return await this.vehicleRepository.softDeleteVehicleById(id);
   }
 
-  async restoreVehicleById(id: string): Promise<void> {
+  async restoreVehicleById(id: number): Promise<void> {
     this.logger.log(`Activating a vehicle with id ${id}`);
     await this.vehicleRepository.restoreVehicleById(id);
   }

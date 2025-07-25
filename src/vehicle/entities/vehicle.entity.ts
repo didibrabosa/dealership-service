@@ -8,7 +8,7 @@ import {
 @Entity()
 export class VehicleEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   type: string;
@@ -23,7 +23,7 @@ export class VehicleEntity {
   color: string;
 
   @Column()
-  year: string;
+  year: number;
 
   @Column()
   plate: string;
